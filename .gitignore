@@ -1,0 +1,8 @@
+venv2/
+people-counting-opencv/venv/
+people-counting-opencv/venv2/
+people-counting-opencv/mobilenet_ssd/
+people-counting-opencv/output/
+people-counting-opencv/videos/
+people-counting-opencv/mongo_test.py
+people-counting-opencv/people_counter2.py
