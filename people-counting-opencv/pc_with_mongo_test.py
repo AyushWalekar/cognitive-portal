@@ -25,6 +25,9 @@ import datetime
 from pymongo import MongoClient
 import pprint
 
+from app.ApplicationContext import ApplicationContext
+from app.DBThread import DBThread
+
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 # ap.add_argument("-p", "--prototxt", required=True,
@@ -41,9 +44,12 @@ ap.add_argument("-s", "--skip-frames", type=int, default=30,
                 help="# of skip frames between detections")
 args = vars(ap.parse_args())
 
-client = MongoClient('localhost', 27017)
-db = client.test
-collection = db["temp"]
+# client = MongoClient('localhost', 27017)
+# db = client.test
+# collection = db["temp"]
+app_context = ApplicationContext.getApplicationContext()
+db_thread = DBThread(int(app_context.db_thread['time_interval']), app_context.db_thread['in_min'])
+db_thread.start()
 
 # initialize the list of class labels MobileNet SSD was trained to
 # detect
@@ -276,14 +282,16 @@ while True:
 
     # if the `q` key was pressed, break from the loop
     if key == ord("q"):
+
         break
 
     # increment the total number of frames processed thus far and
     # then update the FPS counter
     totalFrames += 1
     fps.update()
-    count_per_sec = {}
-    collection.insert_one({"count_min": totalUp - totalDown, "date": datetime.datetime.utcnow()})
+    app_context.total_count =  totalDown - totalUp
+    # count_per_sec = {}
+    # collection.insert_one({"count_min": totalUp - totalDown, "date": datetime.datetime.utcnow()})
 
 # stop the timer and display FPS information
 fps.stop()
