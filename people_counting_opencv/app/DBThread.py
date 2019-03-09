@@ -21,9 +21,9 @@ class DBThread(Thread):
         self.set_time_interval(time_interval=time_interval,in_min=in_min)
 
     # def insert_into_db(self):
-    #     app_context = ApplicationContext.getApplicationContext()
-    #     db_connector = app_context.db_connector
-    #     db_connector.collection.insert_one({"count": app_context.total_count, "date": datetime.datetime.utcnow()})
+    #     app_props = ApplicationContext.getApplicationContext()
+    #     db_connector = app_props.db_connector
+    #     db_connector.collection.insert_one({"count": app_props.total_count, "date": datetime.datetime.utcnow()})
 
     def set_time_interval(self,time_interval,in_min=True):
         if in_min:
@@ -42,9 +42,9 @@ class DBThread(Thread):
             time.sleep(self.time_interval)
 
     # def run_db_thread(self):
-    #     app_context = ApplicationContext.getApplicationContext()
-    #     db_connector = app_context.db_connector
-    #     db_connector.collection.insert_one({"count": app_context.total_count, "date": datetime.datetime.utcnow()})
+    #     app_props = ApplicationContext.getApplicationContext()
+    #     db_connector = app_props.db_connector
+    #     db_connector.collection.insert_one({"count": app_props.total_count, "date": datetime.datetime.utcnow()})
     #     if self.is_running:
     #         threading.Timer(self.time_interval,self.run_db_thread).start()
     #     else:

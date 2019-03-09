@@ -6,14 +6,15 @@ from .DBConnector import DBConnector
 
 class ApplicationContext:
     __obj = None
+    __props = {}
 
     @staticmethod
     def getApplicationContext():
         if ApplicationContext.__obj == None:
-            # db, db_thread = ApplicationContext.__load_config()
             config = ApplicationContext.__load_config()
             ApplicationContext(config)
         return ApplicationContext.__obj
+        # return ApplicationContext.__props
 
     @staticmethod
     def __load_config():
@@ -23,13 +24,13 @@ class ApplicationContext:
             config = ApplicationContext.__create_default_config_file(config_file_name)
         config = configparser.ConfigParser()
         config.read(config_file_name)
-        print("> " + config_file_name + " loaded")
+        print("[INFO] " + config_file_name + " loaded")
         return config
 
     @staticmethod
     def __create_default_config_file(config_file_name):
-        print("> Config file not found")
-        print("> Creating " + config_file_name)
+        print("[INFO] Config file not found")
+        print("[INFO] Creating " + config_file_name + " with DEFAULTS")
         config = configparser.ConfigParser()
         config["db"] = {"host": "localhost", "port": "27017", "db_name": "cognitive_portal",
                         "collection_name": "counting_logs"}
@@ -41,6 +42,9 @@ class ApplicationContext:
             config.write(configfile)
         return
 
+    def getProps(self):
+        return self.__props
+
     def __init__(self, config):
         if ApplicationContext.__obj != None:
             raise Exception("The Class is singleton")
@@ -48,20 +52,23 @@ class ApplicationContext:
             ApplicationContext.__obj = self
             self.total_count = 0
             for section in config.sections():
-                # self.section = config[section]
-                pass
+                ApplicationContext.__props.update({section: dict(config[section])})
+
             db = config["db"]
-            db_thread = config["db_thread"]
-            self.people_counter_props = config["people_counter_props"]
+            # db_thread = config["db_thread"]
+            # self.people_counter_props = config["people_counter_props"]
             self.db = dict(db)
             self.db_connector = DBConnector(host=db["host"], port=int(db["port"]), db_name=db["db_name"],
                                             collection_name=db["collection_name"])
-            self.db_thread = dict(db_thread)
+            # self.db_thread = dict(db_thread)
 
     @staticmethod
     def test():
         obj = ApplicationContext.getApplicationContext()
-        print(obj.people_counter_props['confidence_level'])
+        props = obj.getProps()
+        # print(props)
+        input_source_list =  str(props["people_counter_props"]['input_source']).split(" ")
+        # print(input_source_list)
+        return input_source_list
 
-
-ApplicationContext.test()
+# ApplicationContext.test()
