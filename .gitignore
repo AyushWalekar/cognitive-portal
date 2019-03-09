@@ -1,4 +1,7 @@
 venv2/
+cognitive-portal/
+cognitive-portal-venv/
+*.pyc
 people-counting-opencv/venv/
 people-counting-opencv/venv2/
 people-counting-opencv/mobilenet_ssd/
