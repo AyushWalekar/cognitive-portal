@@ -16,7 +16,9 @@ from threading import Thread
 
 class PeopleCounter(Thread):
     app_context = ApplicationContext.getApplicationContext()
-    app_props = app_context.getProps()
+    app_props = app_context.get_props()
+
+    # to be moved to application starter
     db_thread = DBThread(int(app_props["db_thread"]['time_interval']), app_props["db_thread"]['in_min'])
     db_thread.start()
     confidence_level = float(app_props["people_counter_props"]["confidence_level"])
@@ -263,7 +265,7 @@ class PeopleCounter(Thread):
             # then update the FPS counter
             total_frames += 1
             # app_props.total_count =  totalDown - totalUp
-            PeopleCounter.app_context.total_count = total_down - total_up
+            PeopleCounter.app_context.total_count += total_down - total_up
 
         self.stop_counter()
 
@@ -280,6 +282,7 @@ class PeopleCounter(Thread):
 
     def stop_counter(self):
         print("[INFO] stopping counter for: ", self.source_name)
+        PeopleCounter.app_context.pc_obj_map.pop(self.source_name)
         self.__is_running = False
 
 
