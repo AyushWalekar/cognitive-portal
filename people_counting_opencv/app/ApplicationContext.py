@@ -10,11 +10,10 @@ class ApplicationContext:
 
     @staticmethod
     def getApplicationContext():
-        if ApplicationContext.__obj == None:
+        if ApplicationContext.__obj is None:
             config = ApplicationContext.__load_config()
             ApplicationContext(config)
         return ApplicationContext.__obj
-        # return ApplicationContext.__props
 
     @staticmethod
     def __load_config():
@@ -38,19 +37,21 @@ class ApplicationContext:
         config["people_counter_props"] = {"prototxt": "mobilenet_ssd/MobileNetSSD_deploy.prototxt",
                                           "caffemodel": "mobilenet_ssd/MobileNetSSD_deploy.caffemodel",
                                           "confidence_level": "0.4", "skip_frames": "30"}
+        config["query"] = {"date_time_format_str": "%Y-%m-%dT%H:%M:%SZ"}
         with open(config_file_name, "w") as configfile:
             config.write(configfile)
-        return
+        return config
 
-    def getProps(self):
+    def get_props(self):
         return self.__props
 
     def __init__(self, config):
-        if ApplicationContext.__obj != None:
+        if ApplicationContext.__obj is not None:
             raise Exception("The Class is singleton")
         else:
             ApplicationContext.__obj = self
             self.total_count = 0
+            self.pc_obj_map = {}
             for section in config.sections():
                 ApplicationContext.__props.update({section: dict(config[section])})
 
@@ -67,7 +68,7 @@ class ApplicationContext:
         obj = ApplicationContext.getApplicationContext()
         props = obj.getProps()
         # print(props)
-        input_source_list =  str(props["people_counter_props"]['input_source']).split(" ")
+        input_source_list = str(props["people_counter_props"]['input_source']).split(" ")
         # print(input_source_list)
         return input_source_list
 

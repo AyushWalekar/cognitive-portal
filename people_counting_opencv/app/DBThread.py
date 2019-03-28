@@ -1,13 +1,12 @@
-from threading import Thread
-import threading
 import datetime
 import time
+from threading import Thread
 
-from .DBConnector import DBConnector
 from .ApplicationContext import ApplicationContext
 
+
 class DBThread(Thread):
-    def __init__(self,time_interval,in_min="True"):
+    def __init__(self, time_interval, in_min="True"):
         Thread.__init__(self)
         self.is_running = True
         self.setDaemon(True)
@@ -18,16 +17,16 @@ class DBThread(Thread):
                 in_min = False
             else:
                 raise Exception("Invalid Value")
-        self.set_time_interval(time_interval=time_interval,in_min=in_min)
+        self.set_time_interval(time_interval=time_interval, in_min=in_min)
 
     # def insert_into_db(self):
     #     app_props = ApplicationContext.getApplicationContext()
     #     db_connector = app_props.db_connector
     #     db_connector.collection.insert_one({"count": app_props.total_count, "date": datetime.datetime.utcnow()})
 
-    def set_time_interval(self,time_interval,in_min=True):
+    def set_time_interval(self, time_interval, in_min=True):
         if in_min:
-            self.time_interval = time_interval*60
+            self.time_interval = time_interval * 60
         else:
             self.time_interval = time_interval
 
@@ -39,6 +38,7 @@ class DBThread(Thread):
         db_connector = app_context.db_connector
         while self.is_running:
             db_connector.collection.insert_one({"count": app_context.total_count, "date": datetime.datetime.utcnow()})
+            app_context.total_count = 0
             time.sleep(self.time_interval)
 
     # def run_db_thread(self):
@@ -49,4 +49,3 @@ class DBThread(Thread):
     #         threading.Timer(self.time_interval,self.run_db_thread).start()
     #     else:
     #         return
-
