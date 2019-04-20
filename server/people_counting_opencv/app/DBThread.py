@@ -7,9 +7,11 @@ from .ApplicationContext import ApplicationContext
 
 class DBThread(Thread):
     def __init__(self, time_interval, in_min="True"):
+        # TODO: maybe parent class initialisation is not needed in newer python versions
         Thread.__init__(self)
         self.is_running = True
         self.setDaemon(True)
+        # TODO: can convert to boolean
         if in_min == "True" or in_min == "true" or in_min == 1:
             in_min = True
         else:

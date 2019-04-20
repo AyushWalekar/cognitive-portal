@@ -3,7 +3,7 @@ import os.path
 
 from .DBConnector import DBConnector
 
-
+# TODO: changes in class design, staticmethod and private functions variables should be avoided
 class ApplicationContext:
     __obj = None
     __props = {}
@@ -28,6 +28,7 @@ class ApplicationContext:
 
     @staticmethod
     def __create_default_config_file(config_file_name):
+        # TODO: Convert print statements to logger statements
         print("[INFO] Config file not found")
         print("[INFO] Creating " + config_file_name + " with DEFAULTS")
         config = configparser.ConfigParser()
@@ -47,6 +48,7 @@ class ApplicationContext:
 
     def __init__(self, config):
         if ApplicationContext.__obj is not None:
+            # TODO: find appropriate exception class
             raise Exception("The Class is singleton")
         else:
             ApplicationContext.__obj = self
@@ -62,7 +64,7 @@ class ApplicationContext:
             self.db_connector = DBConnector(host=db["host"], port=int(db["port"]), db_name=db["db_name"],
                                             collection_name=db["collection_name"])
             # self.db_thread = dict(db_thread)
-
+    # TODO: convert this to __name__ == '__main__'
     @staticmethod
     def test():
         obj = ApplicationContext.getApplicationContext()

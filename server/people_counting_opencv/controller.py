@@ -21,5 +21,5 @@ def stop_people_counter(source_name):
     # Counter for given source_name doest not exist
     return False
 
-# add_people_counter("videos/example_01.mp4")
+add_people_counter("videos/example_01.mp4")
 # print(stop_people_counter("videos/example_01.mp4"))
