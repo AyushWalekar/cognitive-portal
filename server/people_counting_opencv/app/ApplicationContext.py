@@ -38,7 +38,7 @@ class ApplicationContext:
         config["people_counter_props"] = {"prototxt": "mobilenet_ssd/MobileNetSSD_deploy.prototxt",
                                           "caffemodel": "mobilenet_ssd/MobileNetSSD_deploy.caffemodel",
                                           "confidence_level": "0.4", "skip_frames": "30"}
-        config["query"] = {"date_time_format_str": "%Y-%m-%dT%H:%M:%SZ"}
+        config["query"] = {"date_time_format_str": "%%Y-%%m-%%dT%%H:%%M:%%SZ"}
         with open(config_file_name, "w") as configfile:
             config.write(configfile)
         return config
